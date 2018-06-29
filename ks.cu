@@ -130,16 +130,32 @@ int main(int argc, char ** argv)
 	/* cudaDeviceSetLimit(cudaLimitMallocHeapSize, 1e8*sizeof(double)); */
 
 	// playground here
-	mat A = randn<mat>(3,3);
-	cout << A << endl;
+	// specify my problem
+	spec sp;
+	sp.T = 10000;
+	sp.N = 300;
+	sp.M = 3;
 
-	vec eig_val;
-	mat eig_vecs;
-	eig_sym(eig_val,eig_vecs,A*A.t());
+	cout << "Covariance matrix is: " << endl;
+	vec eig_val; mat eig_vecs;
+	mat A = 0.1*randn(3,3);
+	mat Ssigma = A*A.t();
+	Ssigma.print();
+	cout << "Persistence matrix is: " << endl;
+	mat Pphi = { {0.90, 0.1, -0.03},
+				 {0.0, 0.8,  0.04},
+				 {0.05, -0.2,  0.7} }; // this matrix converges!
+	Pphi.print();
+	eig_sym(eig_val,eig_vecs,Pphi);
 	cout << "Eigenvalues are: " << endl;
 	cout << eig_val << endl;
 	cout << "Eigenvectors are: " << endl;
 	cout << eig_vecs << endl;
+
+	// simulate stuff
+	mat factor_obs(sp.T,sp,M);
+
+
 
 	// finally we end the program
 	return 0;
