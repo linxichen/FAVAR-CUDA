@@ -166,6 +166,14 @@ int main(int argc, char ** argv)
 	mat empirical_cov = factor_obs*factor_obs.t()/(factor_obs.n_cols);
 	cout << "Empirical Covariance of Factors" << endl <<  empirical_cov << endl;
 
+	// check theoretical covanriance
+	mat theory_cov = solve((eye<mat>(3,3)-Pphi),Ssigma);
+	/* mat theory_cov = Ssigma; */
+	/* for (int iter = 1; iter < 10000; iter++) { */
+	/* 	theory_cov += pow(Pphi,iter)*Ssigma; */
+	/* } */
+	cout << "Theorectical Covariance of Factors" << endl <<  theory_cov << endl;
+
 
 	// finally we end the program
 	return 0;
