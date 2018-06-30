@@ -136,6 +136,7 @@ int main(int argc, char ** argv)
 	sp.N = 300;
 	sp.M = 3;
 
+	// Cook up fake parameters
 	cout << "Covariance matrix is: " << endl;
 	vec eig_val; mat eig_vecs;
 	mat A = 0.1*randn(3,3);
@@ -153,8 +154,17 @@ int main(int argc, char ** argv)
 	cout << eig_vecs << endl;
 
 	// simulate stuff
-	mat factor_obs(sp.T,sp,M);
+	mat L = chol(Ssigma);
+	mat errors = randn(sp.M,sp.T+sp.burnin);
+	mat factor_obs = zeros(sp.M,sp.T+sp.burnin);
+	for (int t=1; t<factor_obs.n_cols; t++) {
+		factor_obs.col(t) = Pphi*factor_obs.col(t-1) +
+			L.t()*errors.col(t-1);
+	}
 
+	// check the empirical covariance matrix
+	mat empirical_cov = factor_obs*factor_obs.t()/(factor_obs.n_cols);
+	cout << "Empirical Covariance of Factors" << endl <<  empirical_cov << endl;
 
 
 	// finally we end the program

@@ -11,9 +11,10 @@
 // so insist)
 struct spec {
 	// Data members
-	int T; // time dimension length
-	int N; // # of variables
-	int M; // # of factors
+	int T;      // time dimension length
+	int N;      // # of variables
+	int M;      // # of factors
+	int burnin; // burnin periods
 };
 
 // Define an class that contains parameters and steady states
